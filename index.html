@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duckeydark UI Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0f14;
+        }
+        .bg-card {
+            background-color: #14161b;
+        }
+        .animated-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animated-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .animated-img {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animated-img.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        /* Consistent interactive image hover effect */
+        .interactive-image {
+            transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 0 0 transparent;
+        }
+        .interactive-image:hover {
+            transform: scale(1.05);
+            filter: brightness(0.85);
+            box-shadow: 0 0 20px rgba(252, 211, 77, 0.4);
+        }
+        .main-hero-img {
+            transition: transform 0.8s ease-out;
+        }
+        .animated-img.show .main-hero-img {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Header Section -->
+    <header class="bg-card py-4 px-6 flex justify-between items-center rounded-b-xl shadow-lg">
+        <div class="flex items-center space-x-2">
+            <img src="https://placehold.co/40x40/fcd34d/000?text=🦆" alt="Logo" class="rounded-full">
+            <span class="text-2xl font-bold">DuckeyDark</span>
+        </div>
+        <nav class="flex space-x-4 md:space-x-8 text-sm md:text-base">
+            <a href="#" class="hover:text-yellow-400" onclick="showHome()">หน้าหลัก</a>
+            <a href="#" class="hover:text-yellow-400">เติมเงิน</a>
+            <a href="#" class="hover:text-yellow-400" onclick="showCategoryPage('หมวดหมู่บริการสั่งซื้อ', 'products')">ซื้อสินค้า</a>
+            <a href="#" class="hover:text-yellow-400">สั่งซื้อ</a>
+            <a href="#" class="hover:text-yellow-400">กิจกรรม</a>
+            <a href="#" class="hover:text-yellow-400">ติดต่อ</a>
+            <a href="#" id="auth-link" class="hover:text-yellow-400 cursor-pointer">เข้าสู่ระบบ / สมัครสมาชิก</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container mx-auto px-4 py-8 md:px-8 lg:px-12">
+        <!-- Main Home Page -->
+        <div id="homepage" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Side: Promotions and News -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Promotion & News Banner -->
+                <div id="promo-news" class="bg-card rounded-xl p-6 shadow-md animated-card">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4">โปรโมชั่นและข่าวสาร</h2>
+                    <div class="relative w-full h-auto rounded-xl overflow-hidden animated-img">
+                        <!-- Added interactive-image class for consistent hover effect -->
+                        <img src="https://placehold.co/1320x500/fcd34d/14161b?text=ตัวอย่าง+แบนเนอร์" alt="Promotion Banner" class="w-full h-auto rounded-xl object-cover interactive-image">
+                    </div>
+                </div>
+                
+                <!-- Category Recommended -->
+                <div id="category-rec" class="bg-card rounded-xl p-6 shadow-md animated-card">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4">หมวดหมู่แนะนำ</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Added interactive-image class for consistent hover effect -->
+                        <div class="relative w-full h-auto rounded-xl overflow-hidden cursor-pointer animated-img interactive-image" onclick="showCategoryPage('หมวดหมู่ที่ 1', 'category1')">
+                            <img src="https://placehold.co/1640x450/fcd34d/14161b?text=หมวดหมู่+ที่+1" alt="Category Banner 1" class="w-full h-auto rounded-xl object-cover">
+                        </div>
+                        <div class="relative w-full h-auto rounded-xl overflow-hidden cursor-pointer animated-img interactive-image" onclick="showCategoryPage('หมวดหมู่ที่ 2', 'category2')">
+                            <img src="https://placehold.co/1640x450/fcd34d/14161b?text=หมวดหมู่+ที่+2" alt="Category Banner 2" class="w-full h-auto rounded-xl object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Recommended Products Section -->
+                <div id="recom-products" class="bg-card rounded-xl p-6 shadow-md animated-card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl md:text-2xl font-bold">สินค้าแนะนำ</h2>
+                        <button class="py-2 px-4 rounded-full bg-yellow-400 text-gray-900 font-bold text-sm hover:bg-yellow-500 transition-colors">
+                            เรียกดูทั้งหมด
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <!-- Product Card 1 -->
+                        <div class="bg-gray-800 rounded-xl p-4 text-center">
+                            <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+ตัวอย่าง+4" alt="Product 1" class="interactive-image rounded-lg mb-2 mx-auto">
+                            <h3 class="font-bold text-lg mb-1">สินค้าตัวอย่าง 4</h3>
+                            <p class="text-sm text-gray-400 mb-2">เหลือ: 0 ชิ้น</p>
+                            <span class="text-yellow-400 font-bold text-xl">70 ฿</span>
+                            <button class="w-full mt-2 py-1 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.193 1.706.703 1.706H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                ซื้อสินค้า
+                            </button>
+                        </div>
+                         <!-- Product Card 2 -->
+                         <div class="bg-gray-800 rounded-xl p-4 text-center">
+                            <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+ตัวอย่าง+3" alt="Product 2" class="interactive-image rounded-lg mb-2 mx-auto">
+                            <h3 class="font-bold text-lg mb-1">สินค้าตัวอย่าง 3</h3>
+                            <p class="text-sm text-gray-400 mb-2">เหลือ: 0 ชิ้น</p>
+                            <span class="text-yellow-400 font-bold text-xl">50 ฿</span>
+                            <button class="w-full mt-2 py-1 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.193 1.706.703 1.706H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                ซื้อสินค้า
+                            </button>
+                        </div>
+                         <!-- Product Card 3 -->
+                         <div class="bg-gray-800 rounded-xl p-4 text-center">
+                            <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+ตัวอย่าง+2" alt="Product 3" class="interactive-image rounded-lg mb-2 mx-auto">
+                            <h3 class="font-bold text-lg mb-1">สินค้าตัวอย่าง 2</h3>
+                            <p class="text-sm text-gray-400 mb-2">เหลือ: 1 ชิ้น</p>
+                            <span class="text-yellow-400 font-bold text-xl">1 ฿</span>
+                            <button class="w-full mt-2 py-1 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.193 1.706.703 1.706H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                ซื้อสินค้า
+                            </button>
+                        </div>
+                         <!-- Product Card 4 -->
+                         <div class="bg-gray-800 rounded-xl p-4 text-center">
+                            <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+ตัวอย่าง+1" alt="Product 4" class="interactive-image rounded-lg mb-2 mx-auto">
+                            <h3 class="font-bold text-lg mb-1">สินค้าตัวอย่าง 1</h3>
+                            <p class="text-sm text-gray-400 mb-2">เหลือ: 0 ชิ้น</p>
+                            <span class="text-yellow-400 font-bold text-xl">200 ฿</span>
+                            <button class="w-full mt-2 py-1 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.193 1.706.703 1.706H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                ซื้อสินค้า
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lucky Game Section -->
+                <div id="lucky-game" class="bg-card rounded-xl p-6 shadow-md animated-card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl md:text-2xl font-bold">เกมสุ่มรางวัล</h2>
+                        <button class="py-2 px-4 rounded-full bg-yellow-400 text-gray-900 font-bold text-sm hover:bg-yellow-500 transition-colors">
+                            เลือกถูกทั้งหมด
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="relative w-full h-auto rounded-xl overflow-hidden text-center bg-gray-800 p-4">
+                            <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ตัวอย่าง+เกมสุ่ม" alt="Game 1" class="w-full h-auto rounded-xl object-cover mb-2 interactive-image">
+                            <p class="font-bold">ตัวอย่างสุ่ม วงล้อ</p>
+                            <p class="text-sm text-gray-400">ราคา: 1.00 ฿</p>
+                            <button class="w-full mt-2 py-1 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors text-sm">
+                                เล่นเลย
+                            </button>
+                        </div>
+                        <div class="relative w-full h-auto rounded-xl overflow-hidden text-center bg-gray-800 p-4">
+                            <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ตัวอย่าง+เกมสุ่ม" alt="Game 2" class="w-full h-auto rounded-xl object-cover mb-2 interactive-image">
+                            <p class="font-bold">ตัวอย่างสุ่ม รางเลื่อน</p>
+                            <p class="text-sm text-gray-400">ราคา: 1.00 ฿</p>
+                            <button class="w-full mt-2 py-1 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors text-sm">
+                                เล่นเลย
+                            </button>
+                        </div>
+                        <div class="relative w-full h-auto rounded-xl overflow-hidden text-center bg-gray-800 p-4">
+                            <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ตัวอย่าง+เกมสุ่ม" alt="Game 3" class="w-full h-auto rounded-xl object-cover mb-2 interactive-image">
+                            <p class="font-bold">ตัวอย่างสุ่ม เปิดหีบ</p>
+                            <p class="text-sm text-gray-400">ราคา: 1.00 ฿</p>
+                            <button class="w-full mt-2 py-1 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors text-sm">
+                                เล่นเลย
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Our Services Section -->
+                <div id="our-services" class="bg-card rounded-xl p-6 shadow-md animated-card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl md:text-2xl font-bold">บริการของเรา</h2>
+                        <button class="py-2 px-4 rounded-full bg-yellow-400 text-gray-900 font-bold text-sm hover:bg-yellow-500 transition-colors">
+                            เรียกดูทั้งหมด
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-800 rounded-xl p-4 text-center">
+                            <p class="font-bold mb-2">บริการตัวอย่าง</p>
+                            <div class="grid grid-cols-3 gap-2">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=PUBG" alt="PUBG" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=Free+Fire" alt="Free Fire" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=Valorant" alt="Valorant" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=Roblox" alt="Roblox" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ROV" alt="ROV" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=LOL" alt="LOL" class="rounded-lg interactive-image">
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 rounded-xl p-4 text-center">
+                            <p class="font-bold mb-2">บริการตัวอย่าง 2</p>
+                            <div class="grid grid-cols-3 gap-2">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=WeTV" alt="WeTV" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=Spotify" alt="Spotify" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=Netflix" alt="Netflix" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=Youtube" alt="Youtube" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=...และอื่นๆ" alt="And more" class="rounded-lg interactive-image">
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 rounded-xl p-4 text-center">
+                            <p class="font-bold mb-2">บริการตัวอย่าง 3</p>
+                            <div class="grid grid-cols-3 gap-2">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ตัวอย่าง+สินค้า" alt="Product 1" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ตัวอย่าง+สินค้า" alt="Product 2" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ตัวอย่าง+สินค้า" alt="Product 3" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ตัวอย่าง+สินค้า" alt="Product 4" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ตัวอย่าง+สินค้า" alt="Product 5" class="rounded-lg interactive-image">
+                                <img src="https://placehold.co/1000x1000/fcd34d/14161b?text=ตัวอย่าง+สินค้า" alt="Product 6" class="rounded-lg interactive-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Us Section -->
+                <div id="about-us" class="bg-card rounded-xl p-6 shadow-md animated-card">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4">เกี่ยวกับเรา</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <p class="text-lg">จำนวนผู้ใช้ทั้งหมดของเรา</p>
+                                <span class="font-bold text-yellow-400">1,545 คน</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0a2 2 0 012-2h6a2 2 0 012 2m-6 4v2m-2 0h4" />
+                                </svg>
+                                <p class="text-lg">ขายสินค้าไปแล้วกว่า</p>
+                                <span class="font-bold text-yellow-400">883 ชิ้น</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p class="text-lg">สินค้าพร้อมจำหน่าย</p>
+                                <span class="font-bold text-yellow-400">455 ชิ้น</span>
+                            </div>
+                        </div>
+                        <div class="relative w-full h-auto rounded-xl overflow-hidden interactive-image">
+                             <img src="https://placehold.co/1000x500/fcd34d/14161b?text=วิดีโอ+ตัวอย่าง" alt="About Video" class="w-full h-auto rounded-xl object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Announcements -->
+            <div class="lg:col-span-1 space-y-8">
+                <div id="announcements" class="bg-card rounded-xl p-6 shadow-md animated-card">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4">ประกาศจากทางร้าน</h2>
+                    <div class="bg-gray-800 p-4 rounded-xl space-y-4">
+                        <div class="bg-gray-700 p-4 rounded-xl">
+                            <p>Duck เปิดให้ลองใช้ได้ ! เปิดให้สามารถทำเซิฟเวอร์ใหม่พร้อมกับแก้ไขเซิฟเวอร์ที่เปิดอยู่แล้วได้ในตัวนี้ 🥳</p>
+                            <div class="flex justify-end items-center text-xs text-gray-400 mt-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>03/10/2023 14:53 น.</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-xl">
+                            <p>ประกาศที่ 2</p>
+                            <div class="flex justify-end items-center text-xs text-gray-400 mt-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>02/10/2023 12:00 น.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 py-2 px-4 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors">
+                        เรียกดูทั้งหมด
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category/Product Page (Initially hidden) -->
+        <div id="category-page" class="hidden">
+            <div class="bg-card rounded-xl p-6 shadow-md">
+                <div class="flex items-center space-x-4 mb-6">
+                    <button onclick="showHome()" class="text-yellow-400 hover:text-yellow-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                    </button>
+                    <h2 id="category-title" class="text-2xl font-bold"></h2>
+                </div>
+                <div id="category-content">
+                    <!-- Products or category images will be added here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-card text-center py-4 px-6 mt-8 rounded-t-xl shadow-lg">
+        <p class="text-sm text-gray-400">&copy; 2023 DuckeyDark. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Login/Register Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 hidden">
+        <div class="bg-card p-8 rounded-xl shadow-2xl w-full max-w-sm relative">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
+            <div class="flex items-center justify-center mb-4">
+                <img src="https://placehold.co/40x40/fcd34d/000?text=🦆" alt="Logo" class="rounded-full mr-2">
+                <span id="modal-title" class="text-xl font-bold">เข้าสู่ระบบ</span>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label for="login-username" class="block text-sm font-medium text-gray-400">ชื่อผู้ใช้</label>
+                    <input type="text" id="login-username" class="mt-1 block w-full rounded-md bg-gray-800 text-white border-transparent focus:border-yellow-500 focus:ring-yellow-500">
+                </div>
+                <div>
+                    <label for="login-password" class="block text-sm font-medium text-gray-400">รหัสผ่าน</label>
+                    <input type="password" id="login-password" class="mt-1 block w-full rounded-md bg-gray-800 text-white border-transparent focus:border-yellow-500 focus:ring-yellow-500">
+                </div>
+                <button type="submit" class="w-full py-2 px-4 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors">เข้าสู่ระบบ</button>
+                <p class="text-center text-sm text-gray-400">
+                    ยังไม่มีบัญชี? <a href="#" id="show-register-form" class="text-yellow-400 hover:underline">สมัครสมาชิก</a>
+                </p>
+            </form>
+
+            <!-- Register Form (Initially hidden) -->
+            <form id="register-form" class="space-y-4 hidden">
+                <div>
+                    <label for="register-username" class="block text-sm font-medium text-gray-400">ชื่อผู้ใช้</label>
+                    <input type="text" id="register-username" class="mt-1 block w-full rounded-md bg-gray-800 text-white border-transparent focus:border-yellow-500 focus:ring-yellow-500">
+                </div>
+                <div>
+                    <label for="register-password" class="block text-sm font-medium text-gray-400">รหัสผ่าน</label>
+                    <input type="password" id="register-password" class="mt-1 block w-full rounded-md bg-gray-800 text-white border-transparent focus:border-yellow-500 focus:ring-yellow-500">
+                </div>
+                <div>
+                    <label for="confirm-password" class="block text-sm font-medium text-gray-400">ยืนยันรหัสผ่าน</label>
+                    <input type="password" id="confirm-password" class="mt-1 block w-full rounded-md bg-gray-800 text-white border-transparent focus:border-yellow-500 focus:ring-yellow-500">
+                </div>
+                 <div>
+                    <label for="pin" class="block text-sm font-medium text-gray-400">รหัส PIN (6 ตัวอักษร)</label>
+                    <input type="password" id="pin" maxlength="6" class="mt-1 block w-full rounded-md bg-gray-800 text-white border-transparent focus:border-yellow-500 focus:ring-yellow-500">
+                </div>
+                 <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="recaptcha-check" class="rounded text-yellow-500 focus:ring-yellow-500">
+                    <label for="recaptcha-check" class="text-sm text-gray-400">ฉันไม่ใช่โปรแกรมอัตโนมัติ</label>
+                </div>
+                <button type="submit" class="w-full py-2 px-4 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors">สมัครสมาชิก</button>
+                <p class="text-center text-sm text-gray-400">
+                    มีบัญชีอยู่แล้ว? <a href="#" id="show-login-form" class="text-yellow-400 hover:underline">เข้าสู่ระบบ</a>
+                </p>
+            </form>
+            <p id="error-message" class="text-center text-red-500 text-sm mt-4 hidden"></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK and custom script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables provided by the environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+
+        // Firebase initialization
+        let app, db, auth;
+
+        // UI Elements
+        const authLink = document.getElementById('auth-link');
+        const authModal = document.getElementById('auth-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalTitle = document.getElementById('modal-title');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegisterFormLink = document.getElementById('show-register-form');
+        const showLoginFormLink = document.getElementById('show-login-form');
+        const errorMessage = document.getElementById('error-message');
+
+        const homepage = document.getElementById('homepage');
+        const categoryPage = document.getElementById('category-page');
+        const categoryTitle = document.getElementById('category-title');
+        const categoryContent = document.getElementById('category-content');
+
+        const categories = {
+            'category1': {
+                name: 'หมวดหมู่ที่ 1',
+                products: [
+                    { name: 'สินค้า A', price: '120 ฿', stock: 5, img: 'https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+A' },
+                    { name: 'สินค้า B', price: '250 ฿', stock: 10, img: 'https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+B' },
+                    { name: 'สินค้า C', price: '30 ฿', stock: 0, img: 'https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+C' }
+                ]
+            },
+            'category2': {
+                name: 'หมวดหมู่ที่ 2',
+                products: [
+                    { name: 'สินค้า X', price: '500 ฿', stock: 2, img: 'https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+X' },
+                    { name: 'สินค้า Y', price: '80 ฿', stock: 15, img: 'https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+Y' },
+                    { name: 'สินค้า Z', price: '15 ฿', stock: 1, img: 'https://placehold.co/1000x1000/fcd34d/14161b?text=สินค้า+Z' }
+                ]
+            }
+        };
+
+        const initializeFirebase = async () => {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                const __initial_auth_token = typeof window.__initial_auth_token !== 'undefined' ? window.__initial_auth_token : null;
+                
+                if (__initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        const userId = user.uid;
+                        console.log("User logged in with ID:", userId);
+                        authLink.innerHTML = `<span>${userId}</span> / <a href="#" id="sign-out-link">ออกจากระบบ</a>`;
+                        authLink.classList.remove('cursor-pointer');
+                        const signOutLink = document.getElementById('sign-out-link');
+                        if (signOutLink) {
+                            signOutLink.addEventListener('click', async (e) => {
+                                e.preventDefault();
+                                try {
+                                    await signOut(auth);
+                                    console.log("User signed out successfully.");
+                                } catch (error) {
+                                    console.error("Error signing out:", error);
+                                }
+                            });
+                        }
+                    } else {
+                        console.log("User is signed out.");
+                        authLink.innerHTML = "เข้าสู่ระบบ / สมัครสมาชิก";
+                        authLink.classList.add('cursor-pointer');
+                    }
+                });
+
+            } catch (e) {
+                console.error("Error initializing Firebase:", e);
+                showError("พบข้อผิดพลาดในการเชื่อมต่อ Firebase กรุณาตรวจสอบการตั้งค่า");
+            }
+        };
+
+        const showError = (message) => {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+        };
+
+        const hideError = () => {
+            errorMessage.textContent = "";
+            errorMessage.classList.add('hidden');
+        };
+
+        // Functions to switch views
+        window.showCategoryPage = (title, categoryId) => {
+            categoryTitle.textContent = title;
+            homepage.classList.add('hidden');
+            categoryPage.classList.remove('hidden');
+            
+            if (categoryId === 'products') {
+                renderProductCategories();
+            } else {
+                renderProducts(categories[categoryId].products);
+            }
+        };
+
+        window.showHome = () => {
+            homepage.classList.remove('hidden');
+            categoryPage.classList.add('hidden');
+        };
+
+        const renderProducts = (products) => {
+            categoryContent.innerHTML = '';
+            const productGrid = document.createElement('div');
+            productGrid.className = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4';
+
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-gray-800 rounded-xl p-4 text-center';
+                productCard.innerHTML = `
+                    <img src="${product.img}" alt="${product.name}" class="interactive-image rounded-lg mb-2 mx-auto">
+                    <h3 class="font-bold text-lg mb-1">${product.name}</h3>
+                    <p class="text-sm text-gray-400 mb-2">เหลือ: ${product.stock} ชิ้น</p>
+                    <span class="text-yellow-400 font-bold text-xl">${product.price}</span>
+                    <button class="w-full mt-2 py-1 rounded-full bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.193 1.706.703 1.706H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        ซื้อสินค้า
+                    </button>
+                `;
+                productGrid.appendChild(productCard);
+            });
+            categoryContent.appendChild(productGrid);
+        };
+        
+        const renderProductCategories = () => {
+             categoryContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <!-- Added interactive-image class for consistent hover effect -->
+                     <div class="relative w-full h-auto rounded-xl overflow-hidden cursor-pointer interactive-image" onclick="showCategoryPage('หมวดหมู่ที่ 1', 'category1')">
+                        <img src="https://placehold.co/1640x450/fcd34d/14161b?text=หมวดหมู่+ที่+1" alt="Service Category 1" class="w-full h-auto rounded-xl object-cover">
+                    </div>
+                    <div class="relative w-full h-auto rounded-xl overflow-hidden cursor-pointer interactive-image" onclick="showCategoryPage('หมวดหมู่ที่ 2', 'category2')">
+                        <img src="https://placehold.co/1640x450/fcd34d/14161b?text=หมวดหมู่+ที่+2" alt="Service Category 2" class="w-full h-auto rounded-xl object-cover">
+                    </div>
+                </div>
+            `;
+        }
+
+        // Event Listeners
+        authLink.addEventListener('click', () => {
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+                authModal.classList.remove('hidden');
+                modalTitle.textContent = "เข้าสู่ระบบ";
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                hideError();
+            }
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            authModal.classList.add('hidden');
+        });
+
+        showRegisterFormLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalTitle.textContent = "สมัครสมาชิก";
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+            hideError();
+        });
+
+        showLoginFormLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalTitle.textContent = "เข้าสู่ระบบ";
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+            hideError();
+        });
+
+        const validateUsername = (username) => {
+            // Updated regex to only allow alphanumeric characters
+            const usernameRegex = /^[a-zA-Z0-9]+$/;
+            return usernameRegex.test(username) && username.length >= 3;
+        };
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+            const username = document.getElementById('login-username').value.toLowerCase();
+            const password = document.getElementById('login-password').value;
+
+            if (!validateUsername(username)) {
+                showError("ชื่อผู้ใช้ต้องประกอบด้วยตัวอักษรและตัวเลขเท่านั้น และมีความยาวอย่างน้อย 3 ตัวอักษร");
+                return;
+            }
+            if (password.length < 6) {
+                showError("รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
+                return;
+            }
+
+            const usernameAsEmail = `${username}@${appId}.com`;
+
+            try {
+                await signInWithEmailAndPassword(auth, usernameAsEmail, password);
+                authModal.classList.add('hidden');
+            } catch (error) {
+                console.error("Authentication error:", error.code, error.message);
+                switch(error.code) {
+                    case 'auth/invalid-email':
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                        showError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+                        break;
+                    default:
+                        showError("เกิดข้อผิดพลาดในการยืนยันตัวตน: " + error.message);
+                        break;
+                }
+            }
+        });
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+            const username = document.getElementById('register-username').value.toLowerCase();
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const pin = document.getElementById('pin').value;
+            const recaptcha = document.getElementById('recaptcha-check').checked;
+
+            if (!validateUsername(username)) {
+                showError("ชื่อผู้ใช้ต้องประกอบด้วยตัวอักษรและตัวเลขเท่านั้น และมีความยาวอย่างน้อย 3 ตัวอักษร");
+                return;
+            }
+            if (password !== confirmPassword) {
+                showError("รหัสผ่านไม่ตรงกัน");
+                return;
+            }
+            if (password.length < 6) {
+                showError("รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
+                return;
+            }
+            if (pin.length !== 6) {
+                showError("รหัส PIN ต้องมี 6 ตัวอักษร");
+                return;
+            }
+            if (!recaptcha) {
+                showError("กรุณายืนยันว่าคุณไม่ใช่โปรแกรมอัตโนมัติ");
+                return;
+            }
+
+            const usernameAsEmail = `${username}@${appId}.com`;
+            
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, usernameAsEmail, password);
+                const user = userCredential.user;
+                const userRef = doc(db, `artifacts/${appId}/users/${user.uid}/private/user_data`, 'profile');
+                await setDoc(userRef, {
+                    username: username,
+                    pin: pin,
+                    createdAt: new Date()
+                });
+                authModal.classList.add('hidden');
+            } catch (error) {
+                console.error("Authentication error:", error.code, error.message);
+                switch(error.code) {
+                    case 'auth/email-already-in-use':
+                        showError("ชื่อผู้ใช้นี้ถูกใช้งานแล้ว");
+                        break;
+                    case 'auth/weak-password':
+                        showError("รหัสผ่านอ่อนเกินไป");
+                        break;
+                    default:
+                        showError("เกิดข้อผิดพลาดในการสมัครสมาชิก: " + error.message);
+                        break;
+                }
+            }
+        });
+        
+        // New Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+        
+        document.querySelectorAll('.animated-card').forEach(card => {
+            observer.observe(card);
+        });
+        
+        document.querySelectorAll('.animated-img').forEach(img => {
+            observer.observe(img);
+        });
+
+        // Initialize Firebase on window load
+        window.onload = initializeFirebase;
+    </script>
+</body>
+</html>
